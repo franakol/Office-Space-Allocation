@@ -11,6 +11,6 @@ model of how office and living space rooms are allocated.
 
 ### Instructions to use
 
-To get satarted, you must have [python 3](python.org) and [git] (git-scm.com)
+To get satarted, you must have [python 3](https://www.python.org/) and [git](https://git-scm.com/)
 
 #### Documentation
