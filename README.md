@@ -11,6 +11,9 @@ model of how office and living space rooms are allocated.
 
 ### Instructions to use
 
-To get satarted, you must have [python 3](https://www.python.org/) and [git](https://git-scm.com/)
+To get satarted, you must have [python 3](https://www.python.org/) and [git](https://git-scm.com/) installed. clone this 
+repo by running https://github.com/franakol/Office-Space-Allocation.git
+
+install a virtual environment and configure it for the project.
 
 #### Documentation
