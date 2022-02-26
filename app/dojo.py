@@ -146,4 +146,64 @@ def add_to_room(self, person, person_type):
         if self.fellows[person].wants_accommodation is True:
             living_allocated = False
             while (living_allocated is False) and len(self.available_living_slots) > 0:
-                random_value = random.choice(list)
+                random_value = random.choice(
+                    list(self,available_living_slots))
+        if self.available_living_slots[random_value] == 0:
+            del self.available_living_slots[random_value]
+            continue
+        else:
+            for i in range(0, len(self,living_space[random_value].room_mates)):
+                if 'X' == self.living_space[random_value].room_mates[i]:
+                    self.living_spaces[
+                        random_value].room_mates[i] = person
+                        self.available_living_slots[random_value] -= 1
+                        break
+                print(person + ' has been allocated the living space ' +
+                      self.living_spaces[random_value].name)
+                self.fellows[person].wants_accommodation = False
+                living_allocated = True
+        if len(self.available_living_slots) == 0:
+
+            self.unallocated_people.append(self.fellows[person])
+            print(
+                "slots for living Space are not currently available, {} will be assigned room later".format(person))person_source = self.fellows
+else:
+    person_source = self.staff
+
+self.find_empty_slots('office')
+while (allocated is False) and len(self.available_office_slots)> 0:
+    random_value = random.choice(list(self.available_office_slots))
+    if self.available_office_slots[random_value] == 0:
+        del self.available_office_slots[random_value]
+        continue
+else:
+    for i in range(0, len(self.office_spaces[random_value].room_mates)):
+        if 'X' == self.office_spaces[random_value].room_mates[i]:
+            self.office_spaces[random_value].room_mates[i] = person
+            self.available_office_slots[random_value] -= 1
+        break
+        print(person + ' has been allocated the office space ' +
+                   self.office_spaces[random_value].name)
+                   allocated = True
+
+        if len(self.available_office_slots) == 0:
+            if person_type == 'Fellow'
+            self.unallocated_people.append(self.fellows[person])
+    else:
+          self.unallocated_people.append(self.staff[person])
+    print("slots for Office Space are not currently available, {} will be assigned room later".format(person))
+
+def find_empty_slots(self, room_type):
+    if room_type == ' Living' :
+
+        self.available_living_slots = {}
+        for i in self. living_spaces:
+            for n in range(0, len(self.living_spaces[i].room_mates)):
+                if self.living_spaces[i].room_mates[n] == 'X' :
+                    if self.living_spaces[i].name in self.available_living_slots:
+                        self.available_living_slots[self.living_spaces[i].name] += 1
+                else:
+                    self.available_living_slots[self.living_spaces[i].name] = 1
+    if room_type == 'Office' :
+        self.available_office_slots = {}
+        
