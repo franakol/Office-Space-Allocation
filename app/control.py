@@ -1,7 +1,8 @@
+
 import random
 from termcolor import cprint
 from app.room import LivingSpace, Office
-from app.person import Staff, Fellow
+from app.person import Person, Staff, Fellow
 
 
 class Dojo:
@@ -60,3 +61,6 @@ def add_person(self, first_name, last_name, person_type, wants_accommodation):
 
     wants_accommodation = True if wants_accommodation and wants_accommodation.lower() in ("yes",
                                                                                           "y") else False
+
+    if wants_accommodation and person_type == "staff":
+        cprint("")

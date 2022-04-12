@@ -16,4 +16,17 @@ repo by running https://github.com/franakol/Office-Space-Allocation.git
 
 install a virtual environment and configure it for the project.
 
+$ pip install virtualenv
+$ mkdir venv
+$ virtualenv -p <path to your python executable> venv
+$ cd venv/scripts/activate
+  
+Inside your virtual environment, install dependencies
+  
+  $ pip install -r requirements.txt
+
+Run the application
+  
+  $ python main.py
+
 #### Documentation
