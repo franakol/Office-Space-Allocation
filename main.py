@@ -1,50 +1,55 @@
-
-import os
 import cmd
-from docopt import docopt, DocoptExit
-from app.dojo import Dojo
+import os
 
-dojo = Dojo('DOJO1', 'The Dojo')
+from docopt import DocoptExit, docopt
+from termcolor import cprint
+from pyfiglet import Figlet, Default_Font
 
-def get_docopt_args(func):
-   """
-   this is the decorator that will pass the results of the docscript command to the function.
-   """
+from app.control import Dojo
 
-   def func_wrapper(self, args):
-       try:
-           opt = docopt(func_wrapper.__doc__, arg)
-        except DocoptExit as e:
-            return 
-            except SystemExit:
-                return
 
-            return func(opt)
-        func_wrapper.__name__ = func.__name__ 
-        func_wrapper.__doc__ = func.__doc__ 
-        func_wrapper.__dict__.update(func.__dict__)
-        return func_wrapper
+def intro():
+    print(__doc__)
 
-        class SpaceAllocation(cmd.cmd):
-            """entry point for the application
-            """
-            os.system('cls')
-            print("\nWelcome to the Dojo Space allocation app")
-            print('\nLocation Name: ' + dojo.name + '\n')
 
-            prompt = 'SpaceAllocation: ' # this prompt replaces the default cmd prompt message
+def docopt_cmd(func):
+    """
+    this is a decorator that simplifies the try/except block 
+    and returns the results of parsing docopt using an action.
+    """
 
-            @get_docopt_args
-            def do_create_room(params):
-                """ to create_room <room_type> <room_name>..."""
-                return dojo.create_room(params["<room_type>"], params["<room_name>"])
+    def fn(self, args):
+        try:
+            opt = docopt(fn.__doc__, args)
 
-            @get_docopt_args
-            def do_add_person(params):
-                """ use: add_person <person_name> <person_type> [<wants_accommodation>]"""
-                wants_accommodation = params["<wants_accommodation>"]
-                if wants_accommodation == 'Y':
-                    wants_accommodation = True
-                    else:
-                        wants_accommodation = False
-                        return dojo.add_person(params["<person_name>"], params["<person_type>"], wants_accommodation)
+        except DocoptExit as err:
+            # The DocoptExit is thrown when the args do not match
+            # We print a message to the user and the usage block
+            print('Invalid Command!')
+            print(err)
+            return
+
+        except SystemExit:
+            # The SystemExit exception prints the usage for --help
+            # No need to do the print here
+            return
+
+        return func(self, opt)
+
+    fn.__doc__ = func.__name__
+    fn.__doc__ = func. __doc__
+    fn.__dict__.update(func.__dict__)
+    return fn
+
+
+class App(cmd.cmd):
+    os.system("cls")
+    prompt = "DojoRoomAllocator >>> "
+
+    font = Figlet(Default_Font)
+    cprint("{}{}".format(font.renderText(
+        "Dojo\nRoom Allocator"), __doc__,), color="green")
+
+    def __init__(self):
+        super(App, self).__init__()
+        self.dojo = Dojo()
