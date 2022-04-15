@@ -1,5 +1,6 @@
 
 import random
+#from turtle import color
 
 from termcolor import cprint
 
@@ -29,39 +30,38 @@ class Dojo:
             cprint("unknown room type: rooms can be of either "
                 "livingspace or office types.", color="red")
             return False
-    
-        if room_names:
-            valid_room_names = valid_room_names + room_names
-            
+
+        for room_name in room_names:
+            room_name = room_name.lower()
+            if room_name in self.names_of_all_created_rooms:
+                cprint(f"a room with name '{room_name}' already exists: please use a different name",
+                    color="red")
+                return False
+            if room_name:
+                valid_room_names.append(room_name)
 
         for room_name in valid_room_names:
-            self.__create(room_type, room_name.lower())
+            self.__create(room_type, room_name)
         return True
-    
-        
-    
-        
-
 
     def __create(self, room_type, room_name):
-        """ helper  function for create_room"""
+        """ helper function for create_room """
         if room_type == "office":
             new_room = Office(room_name)
-            cprint(f"An office called {room_name} has been created successfully"
+            cprint(f"An office called {room_name} has been successfully"
                 " created!", color="green")
-            
+
+            self.all_created_rooms[new_room.name] = new_room
+            self.names_of_all_created_rooms.append(new_room.name)
+            return True
         if room_type == "livingspace":
             new_room = LivingSpace(room_name)
-            cprint(f"A livingspace called {room_name} has been created successfully"
+            cprint(f"A livingspace called {room_name} has been successfully"
                 " created!", color="green")
 
-            self.all_created_rooms[room_name] = new_room
-            self.names_of_all_created_rooms.append(new_room.name)
-            #cprint(f"a room with name '{room_name}' already exists: please use a different name", color="red")
-            #return False
+        self.all_created_rooms[new_room.name] = new_room
+        self.names_of_all_created_rooms.append(new_room.name)
         return True
-
-            
 
     
 
