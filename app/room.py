@@ -6,7 +6,7 @@ class Room():
         self is a reference to the current instance of the class
         used to access variables that belong to the class
         """
-        self.name = name.title()
+        self.name = name
         self.members = []
         self.max_capacity = 0
         self.type_ = self.__class__.__name__
@@ -20,8 +20,8 @@ class Room():
     def __repr__(self):
         template = "Room Name: \"{}\" Type: \"{}\"\n----------------------------------------\n{}\n\n"
         return template.format(self.name, self.type_,
-                               ", ".join([member.name for member in self.members]) if len(
-                                   self.members) != 0 else "<-- No Members-->")
+        ", ".join([member.name for member in self.members]) if len(
+                                self.members) != 0 else "<-- No Members-->")
 
 
 class Office(Room):
