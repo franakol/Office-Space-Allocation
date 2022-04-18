@@ -1,5 +1,6 @@
 
 import random
+import pdb
 #from turtle import color
 
 from termcolor import cprint
@@ -17,6 +18,8 @@ class Dojo:
         self.names_of_all_added_people = []
         self.added_people = dict()
         self.available_offices = []
+        self.available_livingspaces = []
+        
 
     def create_room(self, room_type, room_names):
         """
@@ -48,6 +51,9 @@ class Dojo:
         """ helper function for create_room """
         if room_type == "office":
             new_room = Office(room_name)
+            self.available_offices.append(new_room)
+            
+            
             cprint(f"An office called {room_name} has been successfully"
                 " created!", color="green")
 
@@ -56,6 +62,7 @@ class Dojo:
             return True
         if room_type == "livingspace":
             new_room = LivingSpace(room_name)
+            self.available_livingspaces.append(new_room)
             cprint(f"A livingspace called {room_name} has been successfully"
                 " created!", color="green")
 
@@ -87,49 +94,55 @@ class Dojo:
             return False
 
         is_added = False
+        #if person_type.upper() == "STAFF":
+        person = Staff(first_name, last_name)
+        cprint(f"{first_name, last_name} has been added successfully", color="blue")
+        self.added_people[first_name, last_name] = person
+        is_added = True
+        self.names_of_all_added_people.append(person.name)
+        if len(self.available_offices) != 0:
+            office = random.choice(self.available_offices)
+            cprint(f"{first_name.lower()} has been allocated office {office.name}", color="green")
+            office.members.append(person)
+            if office.is_full():
+                officeindex = self.available_offices.index(office)
+                self.available_offices.pop(officeindex)
+            person.office_name = office.name
+            person.is_allocated = True
+        else:
+            cprint(f"{first_name.lower()} has not been allocated an office yet", color="yellow")
 
-        if person_type.upper() == "STAFF":
-            person = Staff(first_name, last_name)
-            cprint(f"{first_name, last_name} has been added successfully", color="blue")
-            self.added_people[first_name, last_name] = person
-            is_added = True
-            self.names_of_all_added_people.append(person.name)
-            if len(self.available_offices) != 0:
-                office = random.choice(self.available_offices)
-                cprint(f"{first_name.lower()} has been allocated office {office.name}", color="green")
-                office.members.append(person)
-                person.office_name = office.name
-                person.is_allocated = True
-            else:
-                cprint(f"{first_name.lower()} has not been allocated an office yet", color="yellow")
-
-        if person_type.upper() == "FELLOW":
-            person = Fellow(first_name, last_name, wants_accommodation)
-            cprint(f"{first_name, last_name} has been added successfully", color="blue")
-            self.added_people[person.name] = person
-            is_added = True
-            self.names_of_all_added_people.append(person.name)
-            if len(self.available_offices) != 0:
-                office = random.choice(self.available_offices)
-                cprint(f"{first_name.lower()} has been allocated office {office.name}", color="green")
-                office.members.append(person)
-                person.office_name = office.name
+        if person_type.upper() == "FELLOW" and wants_accommodation:
+            #person = Fellow(first_name, last_name, wants_accommodation)
+            #cprint(f"{first_name, last_name} has been added successfully", color="blue")
+            #self.added_people[person.name] = person
+            #is_added = True
+            #self.names_of_all_added_people.append(person.name)
+            if len(self.available_livingspaces) != 0:
+                livingspace = random.choice(self.available_livingspaces)
+                cprint(f"{first_name.lower()} has been allocated livingspace {livingspace.name}", color="green")
+                livingspace.members.append(person)
+                if livingspace.is_full():
+                    livingspaceindex = self.available_livingspaces.index(livingspace)
+                    self.available_livingspaces.pop(livingspaceindex)
+                person.livingspace_name = livingspace.name
                 person.is_allocated = True 
             #if not wants_accommodation
             #else: 
             # False
             else:
-                cprint(f"{first_name.lower()} has not been allocated an office yet", color="yellow")
+                cprint(f"{first_name.lower()} has not been allocated an livingspace yet", color="yellow")
 
-                if wants_accommodation:
-                    if len(self.available_livingspaces()) != 0:
-                        livingspace = random.choice(self.available_livingspaces())
-                    cprint(f"{first_name.lower()} has been allocated livingspace {livingspace.name}", color="blue")
-                    livingspace.members.append(person)
-                    person.livingspace_name = livingspace.name
-                    person.is_allocated = True if person.office_name and person.livingspace_name else False
-                else:
-                    cprint(f"{person.name} has not been allocated a living space as yet! create some rooms to add them", color="yellow")
+                #if wants_accommodation:
+                #   if len(self.available_livingspaces) != 0:
+                #       livingspace = random.choice(self.available_livingspaces)
+                #    cprint(f"{first_name.lower()} has been allocated livingspace {livingspace.name}", color="blue")
+                #    livingspace.members.append(person)
+                    
+                #    person.livingspace_name = livingspace.name
+                #    person.is_allocated = True if person.office_name and person.livingspace_name else False
+                #else:
+                #    cprint(f"{person.name} has not been allocated a living space as yet! create some rooms to add them", color="yellow")
         return is_added
     
     

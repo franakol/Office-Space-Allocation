@@ -1,5 +1,14 @@
+# virtualenv
+.my_env
 my_env/
+
+# python clutter
 __pycache__
-.vscode
-*.__pycache__
+app/__pycache__
+app/__pycache__/
+.app/__pycache__
 *.pyc
+unittests.cfg
+
+
+.vscode/
