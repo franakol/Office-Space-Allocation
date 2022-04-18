@@ -15,7 +15,7 @@ class Room():
         return len(self.members) == 0
 
     def is_full(self):
-        return len(self.members) >= self.max_capacity
+        return True if(len(self.members) >= self.max_capacity) else False
 
     def __repr__(self):
         template = "Room Name: \"{}\" Type: \"{}\"\n----------------------------------------\n{}\n\n"
