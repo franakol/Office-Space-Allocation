@@ -124,6 +124,22 @@ class App (cmd.Cmd):
         name = "{} {}".format(first_name, second_name)
 
         self.dojo.reallocate_person(name, new_room_name)
+        
+        
+    @docopt_cmd
+    def do_save_state(self, args):
+        """Usage: save_state [--db=sqlite_database]"""
+        #Sqlite_database_name = args['sqlite_database']
+        print(Dojo.save_state(args))
+        
+        
+        
+    @docopt_cmd
+    def do_load_state(self, args):
+        """Usage: load_state <sqlite_database>"""
+        #sqlite_database = args['<sqlite_database>']
+        print(Dojo.load_state(args))
+    
 
     # @docopt_cmd
     # def do_clear(self, _):

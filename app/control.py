@@ -1,4 +1,4 @@
-
+import os
 import random
 import pdb
 #from turtle import color
@@ -7,6 +7,9 @@ from termcolor import cprint
 
 from app.person import Fellow, Person, Staff
 from app.room import LivingSpace, Office
+from app.database.database import *
+
+
 
 
 class Dojo:
@@ -152,7 +155,7 @@ class Dojo:
             :returns True if it has printed the room,or
             False otherwise
         """
-        room_name = room_name.lower()
+        room_name = room_name.upper()
         if room_name not in self.names_of_all_created_rooms:
             cprint(
                 f"a room with name {room_name} doesn't exist in the Dojo", color="red")
@@ -172,7 +175,16 @@ class Dojo:
         if filename is None:
             for room in self.all_created_rooms.values():
                 # if not room.is_empty():
-                print(room)
+                line_1_string = 'ROOM ' + room.name.upper() 
+                print(line_1_string)
+                print('------------------------------------')
+                room_members = []
+                
+                for member in room.members:
+                    room_members.append(member.name.upper())
+                print(', '.join(room_members))
+                
+                print('\n')
         else:
             with open(filename, mode="w", encoding="UTF-8") as fh:
                 for room in self.all_created_rooms.values():
@@ -230,13 +242,13 @@ class Dojo:
     def reallocate_person(self, name, new_room_name):
         """ Reallocates a person to a room. useful when a person is added
             without allocating them a room or for shifting people within rooms. """
-        name = name.title()
-        if name.title() not in self.names_of_all_added_people:
+        name = name.upper()
+        if name.upper() not in self.names_of_all_added_people:
             cprint(
                 f"person with name '{name}' has not been added to the Dojo", color="red")
             return False
 
-        room_name = new_room_name.title()
+        room_name = new_room_name.upper()
         if room_name not in self.names_of_all_created_rooms:
             cprint(
                 f"room with name '{new_room_name}' has not yet been created", color="red")
@@ -318,3 +330,107 @@ class Dojo:
             if fh is not None:
                 fh.close()
         return has_loaded
+    
+    
+    
+    def connect_to_db(self, db_name):
+        """Helper function to connect to database"""
+        self.db = create_engine("sqlite:///" + db_name)
+        session = sessionmaker()
+        session.configure(blind=self.db)
+        Base.metadata.create_all(self.db)
+        
+        storage_session = session()
+        return storage_session
+        
+    def save_state(self, args):
+        """Takes up an optional argument --db that 
+        specifies the database to store the data
+        in the rooms and people dictionary. 
+        Creates database and save data"""
+        
+        
+        self.db_name = "dojo.db"
+        if args["--db"]:
+            self.db_name = args["--db"]
+            
+            
+        # check if the database exists, if it does, delete the existing.
+        
+        if os.path.exists(self.db_name):   
+            os.remove(self.db_name)
+            
+        try:
+            save_session = self.connect_to_db(self.db_name)
+            self.save_people(save_session)
+            self.save_rooms(save_session)
+            self.save_allocations(save_session)    
+            
+            message = "Data has been stored in the {} database".format(
+                self.db_name)
+
+        except Exception:
+            message = "Error saving data to {}".format(self.db_name)
+
+        save_session.commit()
+        save_session.close()
+
+        return message
+
+
+
+    def save_people(self, storage_session):
+        """
+        Loads data from the people_data dict into the database
+        """
+        try:
+            for key, values in People.items():
+                #person_id = key
+                first_name = values["first_name"]
+                last_name = values["last_name"]
+                person_type = values["person_type"]
+                wants_accommodation = values["accommodation"]
+            
+
+                people = People(first_name=first_name, last_name=last_name,
+                                person_type=person_type, wants_accommodation=wants_accommodation,
+                                )
+                storage_session.add(people)
+                
+            return people
+        except Exception:
+            return "Failed"
+
+    def save_rooms(self, storage_session):
+        """
+        Loads data from the rooms dict into the database
+        """
+        try:
+            for key, values in Rooms.items():
+                room_name = key
+                room_type = values["room_type"]
+                room_data = Rooms(room_name=room_name, room_type=room_type)
+
+                storage_session.add(room_data)
+
+            return room_data
+        except Exception:
+            return "Failed"
+
+    #def save_allocations(self, storage_session):
+    #    """
+    #   Loads data of room allocations into allocations table
+    #    """
+    #    try:
+    #        for key, values in Rooms.items():
+    #            room_name = key
+    #            for identifier in values["occupants"]:
+    #                occupant_id = identifier
+    #
+    #                allocation_data = Allocations(room_name=room_name,
+    #                                              occupant_id=occupant_id)
+    #                storage_session.add(allocation_data)
+
+    #       return allocation_data
+    #    except Exception:
+    #       return "Failed"
