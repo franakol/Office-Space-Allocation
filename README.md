@@ -1,6 +1,6 @@
 # Office-Space-Allocation
 
-This system is a utility that shows how rooms are allocated at Andela's office facility uin Kenya called the 'DOJO'
+This system is a utility that shows how rooms are allocated at Andela's office facility in Kenya called the 'DOJO'
 
 ## Justification
 
@@ -15,18 +15,25 @@ To get started, you must have [python 3](https://www.python.org/) and [git](http
 $ `git clone https://github.com/franakol/Office-Space-Allocation.git`
 
 install a virtual environment and configure it for the project.
-
+```
 $ pip install virtualenv
+```
+```
 $ mkdir venv
+```
+```
 $ virtualenv -p <path to your python executable> venv
+```
+```
 $ cd venv/scripts/activate
+```
 
 Inside your virtual environment, install dependencies
-
+```
 $ pip install -r requirements.txt
-
+```
 Run the application
-
-$ python main.py
-
+```
+$ python new_docopt.py
+```
 #### Documentation
