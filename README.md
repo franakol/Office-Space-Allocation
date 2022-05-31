@@ -14,26 +14,44 @@ To get started, you must have [python 3](https://www.python.org/) and [git](http
 
 $ `git clone https://github.com/franakol/Office-Space-Allocation.git`
 
-install a virtual environment and configure it for the project.
+* install a virtual environment and configure it for the project.
 ```
 $ pip install virtualenv
-```
-```
 $ mkdir venv
-```
-```
 $ virtualenv -p <path to your python executable> venv
-```
-```
 $ cd venv/scripts/activate
 ```
 
-Inside your virtual environment, install dependencies
+* Inside your virtual environment, install dependencies
 ```
 $ pip install -r requirements.txt
 ```
-Run the application
+* Run the application
 ```
 $ python new_docopt.py
 ```
 #### Documentation
+
+```
+`create_room <room_type> <room_name>...()` creates a room or rooms of type room_type
+
+`add_person <first_name> <second_name> <FELLOW|STAFF> [<wants_accommodation>]()` adds a person of either type fellow or staff to the dojo. wants_accommodation is an optional parameter.
+
+`print_room <room_name>()` prints the details of a room specified by room_name
+
+`load_people <filename>()` adds people to the dojo from filename if filename is not empty
+
+print_allocations [<-o=filename>] prints all rooms in the dojo and all related information
+
+`print_unallocated [<-o=filename>]()` prints unallocated people in the Dojo.
+
+`reallocate_person <first_name> <second_name> <new_room_name>()` reallocates a person to new_room_name
+
+`help()` displays the usage message
+
+`clear()` Clears the application screen
+
+`quit()` Exits the application
+
+
+
